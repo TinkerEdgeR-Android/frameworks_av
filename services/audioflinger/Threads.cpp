@@ -4550,6 +4550,17 @@ AudioFlinger::PlaybackThread::mixer_state AudioFlinger::MixerThread::prepareTrac
             float typeVolume = mStreamTypes[track->streamType()].volume;
             float v = masterVolume * typeVolume;
 
+            //add for boot video:sync audio for boot
+            char value[PROPERTY_VALUE_MAX] = "";
+            property_get("persist.sys.bootvideo.enable", value, "false");
+            if(!strcmp(value,"true")){
+                property_get("sys.bootvideo.closed", value, "1");
+                if (atoi(value) == 0){
+                    ALOGV("bootvideo running now,audioflinger no need to control volume");
+                        v = 1.0;
+                   }
+             }
+
             if (track->isPausing() || mStreamTypes[track->streamType()].mute) {
                 vl = vr = 0;
                 vlf = vrf = vaf = 0.;
