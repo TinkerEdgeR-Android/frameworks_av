@@ -1007,8 +1007,12 @@ void MediaCodecSource::onMessageReceived(const sp<AMessage> &msg) {
             // if we already reached EOS, reply and return now
             ALOGI("encoder (%s) already stopped",
                     mIsVideo ? "video" : "audio");
-            (new AMessage)->postReply(replyID);
-            break;
+            if (mIsVideo) {
+                (new AMessage)->postReply(replyID);
+                break;
+            } else {
+                ALOGD("continue to stop for audio");
+            }
         }
 
         mStopReplyIDQueue.push_back(replyID);
