@@ -861,6 +861,21 @@ status_t AudioPolicyManager::getOutputForAttr(const audio_attributes_t *attr,
         *flags = (audio_output_flags_t)(*flags | AUDIO_OUTPUT_FLAG_HW_AV_SYNC);
     }
 
+    /* select one device to bitstream audio
+     * we support HDMI/SPDIF to bitsteam audio, if flag = AUDIO_OUTPUT_FLAG_DIRECT and
+     * audio format is AUDIO_FORMAT_IEC61937, we think it want to bitstream a audio
+     */
+    if((*flags & AUDIO_OUTPUT_FLAG_DIRECT) && (config->format == AUDIO_FORMAT_IEC61937)){
+        audio_devices_t availableOutputDevicesType = mAvailableOutputDevices.types();
+        if((mBistreamDevice == AUDIO_DEVICE_OUT_SPDIF) && 
+            (availableOutputDevicesType&AUDIO_DEVICE_OUT_SPDIF)){
+            device = AUDIO_DEVICE_OUT_SPDIF;
+        }else if((mBistreamDevice == AUDIO_DEVICE_OUT_AUX_DIGITAL) &&
+            (availableOutputDevicesType&AUDIO_DEVICE_OUT_AUX_DIGITAL)){
+            device = AUDIO_DEVICE_OUT_AUX_DIGITAL;
+        }
+    }
+
     ALOGV("getOutputForAttr() device 0x%x, sampling rate %d, format %#x, channel mask %#x, "
           "flags %#x",
           device, config->sample_rate, config->format, config->channel_mask, *flags);
@@ -4153,7 +4168,8 @@ status_t AudioPolicyManager::initialize() {
         ALOGE("Failed to open primary output");
         status = NO_INIT;
     }
-
+    // set hdmi for default value for bitstream
+    mBistreamDevice = AUDIO_DEVICE_OUT_AUX_DIGITAL;
     updateDevicesAndOutputs();
     return status;
 }

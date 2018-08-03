@@ -2037,7 +2037,14 @@ sp<AudioFlinger::PlaybackThread::Track> AudioFlinger::PlaybackThread::createTrac
     // Make sure that application is notified with sufficient margin before underrun.
     // The client can divide the AudioTrack buffer into sub-buffers,
     // and expresses its desire to server as the notification frame count.
-    if (sharedBuffer == 0 && audio_is_linear_pcm(format)) {
+
+    /* 
+     * the old condition is audio_is_linear_pcm(format),
+     * but the value of notificationFrameCount is 0 when format set to AUDIO_FORMAT_IEC61937 when 
+     * audio is passthrough, this lead to AudioTrack can't fill audio datas
+     * hh@rock-chips.com
+     */
+    if (sharedBuffer == 0 && audio_has_proportional_frames(format)) {// audio_is_linear_pcm(format)
         size_t maxNotificationFrames;
         if (*flags & AUDIO_OUTPUT_FLAG_FAST) {
             // notify every HAL buffer, regardless of the size of the track buffer

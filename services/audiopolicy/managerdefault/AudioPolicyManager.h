@@ -606,6 +606,12 @@ protected:
 
         // Surround formats that are enabled.
         std::unordered_set<audio_format_t> mSurroundFormats;
+
+        /* 
+         * android P only support HDMI for bitstream device for default. 
+         * For support SPDIF, we add it to record the device to bitstream for user setting
+         */
+        int mBistreamDevice;
 private:
         // Add or remove AC3 DTS encodings based on user preferences.
         void filterSurroundFormats(FormatVector *formatsPtr);
