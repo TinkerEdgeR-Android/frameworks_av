@@ -1,3 +1,19 @@
+
+cc_defaults {
+    name: "librkplayer_defaults",
+    srcs: [
+        "FFPlayer.cpp"
+    ],
+    cflags: [
+        "-DUSE_FFPLAYER",
+        "-DAVS90",
+        "-DAVS50",
+    ],
+    include_dirs: [
+        "frameworks/av/media/rk_ffplayer",
+    ],
+}
+
 cc_library_shared {
 
     srcs: [
@@ -71,6 +87,8 @@ cc_library_shared {
             cfi: true,
         },
     },
+
+    defaults: ["librkplayer_defaults"],
 
 }
 
