@@ -460,6 +460,18 @@ private:
 
     status_t setupEAC3Codec(bool encoder, int32_t numChannels, int32_t sampleRate);
 
+    status_t setupRACodec(
+            bool encoder, int32_t numChannels, int32_t sampleRate, int32_t blockAlign);
+
+    status_t setupWMACodec(
+            bool encoder, int32_t numChannels, int32_t sampleRate, 
+            int32_t blockAlign, OMX_AUDIO_WMAFORMATTYPE type, int32_t bitRate);
+
+    status_t setupFfmpegCodec(
+            bool encoder, int32_t numChannels, int32_t sampleRate, 
+            int32_t blockAlign, int32_t bitRate, int32_t codecId,
+            int32_t sampleFormat, int32_t bitPerSample);
+
     status_t selectAudioPortFormat(
             OMX_U32 portIndex, OMX_AUDIO_CODINGTYPE desiredFormat);
 

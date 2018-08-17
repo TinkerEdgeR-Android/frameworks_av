@@ -225,6 +225,14 @@ enum {
     kKeyExifOffset       = 'exof', // int64_t, Exif data offset
     kKeyExifSize         = 'exsz', // int64_t, Exif data size
     kKeyIsExif           = 'exif', // bool (int32_t) buffer contains exif data block
+    //add for ffmpeg plugin
+    kKeyExtraData        = 'extr', // raw data extra data
+    kKeyBitsPerRawSample = 'bprs', // int32_t
+    kKeyBlockAlign       = 'blka', // int32_t
+    kKeySampleFormat     = 'splf', // int32_t
+    kKeyWMAVersion       = 'wmav', // int32_t
+    kKeyWMVVersion       = 'wmvv', // int32_t
+    kKeyCodecId          = 'cdci', // int32_t
 };
 
 enum {
@@ -232,6 +240,18 @@ enum {
     kTypeAVCC        = 'avcc',
     kTypeHVCC        = 'hvcc',
     kTypeD263        = 'd263',
+};
+
+enum {
+    kTypeWMA         = 0,
+    kTypeWMAPro,
+    kTypeWMALossLess,
+};
+
+enum {
+    kTypeWMVVer_7         = 0,
+    kTypeWMVVer_8,
+    kTypeWMVVer_9,
 };
 
 enum {

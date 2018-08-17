@@ -68,4 +68,41 @@ const char *MEDIA_MIMETYPE_TEXT_CEA_608 = "text/cea-608";
 const char *MEDIA_MIMETYPE_TEXT_CEA_708 = "text/cea-708";
 const char *MEDIA_MIMETYPE_DATA_TIMED_ID3 = "application/x-id3v4";
 
+//add for ffmpeg extractor
+const char *MEDIA_MIMETYPE_CONTAINER_MPG = "video/mpg";
+const char *MEDIA_MIMETYPE_CONTAINER_FLV = "video/flv";
+const char *MEDIA_MIMETYPE_CONTAINER_WIMO_VER1 = "video/wimo-ver1";
+const char *MEDIA_MIMETYPE_CONTAINER_WMV = "video/wmv";
+const char *MEDIA_MIMETYPE_CONTAINER_MOV = "video/mov";
+const char *MEDIA_MIMETYPE_CONTAINER_WMA = "audio/x-ms-wma";
+const char *MEDIA_MIMETYPE_CONTAINER_ASF = "video/ffm-asf";
+const char *MEDIA_MIMETYPE_CONTAINER_REALVIDEO = "video/ffm-rmvb";
+const char *MEDIA_MIMETYPE_CONTAINER_APE = "audio/ffm-ape";
+const char *MEDIA_MIMETYPE_CONTAINER_DTS = "audio/ffm-dts";
+const char *MEDIA_MIMETYPE_CONTAINER_FLAC = "audio/ffm-flac";
+const char *MEDIA_MIMETYPE_CONTAINER_VC1 = "video/ffm-vc1";
+const char *MEDIA_MIMETYPE_CONTAINER_HEVC = "video/ffm-hevc";
+const char *MEDIA_MIMETYPE_CONTAINER_DIVX = "video/ffm-divx";
+const char *MEDIA_MIMETYPE_CONTAINER_WEBM = "video/ffm-webm";
+const char *MEDIA_MIMETYPE_CONTAINER_RM = "video/ffm-rm";
+const char *MEDIA_MIMETYPE_CONTAINER_RA = "audio/ffm-ra";
+const char *MEDIA_MIMETYPE_CONTAINER_FFMPEG = "video/ffm-ffmpeg";
+const char *MEDIA_MIMETYPE_CONTAINER_MP2 = "video/ffm-mp2";
+const char *MEDIA_MIMETYPE_AUDIO_ALAC = "audio/ffm-alac";
+const char *MEDIA_MIMETYPE_AUDIO_RA = "audio/ffm-audiora";
+const char *MEDIA_MIMETYPE_AUDIO_FFMPEG = "audio/ffm-ffmpeg";
+const char *MEDIA_MIMETYPE_AUDIO_DTS = "audio/ffm-dts";
+const char *MEDIA_MIMETYPE_AUDIO_APE = "audio/ffm-audioape";
+const char *MEDIA_MIMETYPE_VIDEO_REALVIDEO = "video/ffm-videormvb";
+const char *MEDIA_MIMETYPE_VIDEO_FFMPEG = "video/ffm-videoffmpeg";
+const char *MEDIA_MIMETYPE_VIDEO_WMV = "video/ffm-wmv";
+const char *MEDIA_MIMETYPE_VIDEO_DIVX = "video/ffm-videodivx";
+const char *MEDIA_MIMETYPE_VIDEO_FLV =  "video/flv";
+const char *MEDIA_MIMETYPE_VIDEO_VC1 =  "video/wvc1";
+const char *MEDIA_MIMETYPE_VIDEO_WMV3 =  "video/x-ms-wmv";
+
+const char *MEDIA_MIMETYPE_AUDIO_WMA = "audio/x-ms-wma";
+const char *MEDIA_MIMETYPE_AUDIO_WMAPRO = "audio/x-ms-wmapro";
+const char *MEDIA_MIMETYPE_AUDIO_WAV = "audio/wav";//pcm/adpcm
+
 }  // namespace android

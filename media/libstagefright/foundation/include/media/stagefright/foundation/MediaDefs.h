@@ -70,6 +70,44 @@ extern const char *MEDIA_MIMETYPE_TEXT_CEA_608;
 extern const char *MEDIA_MIMETYPE_TEXT_CEA_708;
 extern const char *MEDIA_MIMETYPE_DATA_TIMED_ID3;
 
+//add for ffmpeg extractor
+extern const char *MEDIA_MIMETYPE_CONTAINER_WIMO_VER1;
+extern const char *MEDIA_MIMETYPE_CONTAINER_WMV;
+extern const char *MEDIA_MIMETYPE_CONTAINER_MPG;
+extern const char *MEDIA_MIMETYPE_CONTAINER_FLV;
+extern const char *MEDIA_MIMETYPE_CONTAINER_MOV;
+extern const char *MEDIA_MIMETYPE_CONTAINER_WMA;
+extern const char *MEDIA_MIMETYPE_CONTAINER_ASF;
+extern const char *MEDIA_MIMETYPE_CONTAINER_REALVIDEO;
+extern const char *MEDIA_MIMETYPE_CONTAINER_APE;
+extern const char *MEDIA_MIMETYPE_CONTAINER_DTS;
+extern const char *MEDIA_MIMETYPE_CONTAINER_FLAC;
+extern const char *MEDIA_MIMETYPE_CONTAINER_VC1;
+extern const char *MEDIA_MIMETYPE_CONTAINER_HEVC;
+extern const char *MEDIA_MIMETYPE_CONTAINER_DIVX;
+extern const char *MEDIA_MIMETYPE_CONTAINER_WEBM;
+extern const char *MEDIA_MIMETYPE_CONTAINER_RM;
+extern const char *MEDIA_MIMETYPE_CONTAINER_MP2;
+extern const char *MEDIA_MIMETYPE_CONTAINER_RA;
+extern const char *MEDIA_MIMETYPE_CONTAINER_FFMPEG;
+extern const char *MEDIA_MIMETYPE_AUDIO_ALAC;
+extern const char *MEDIA_MIMETYPE_AUDIO_RA;
+extern const char *MEDIA_MIMETYPE_AUDIO_FFMPEG;
+extern const char *MEDIA_MIMETYPE_AUDIO_DTS;
+extern const char *MEDIA_MIMETYPE_AUDIO_APE;
+extern const char *MEDIA_MIMETYPE_VIDEO_REALVIDEO;
+extern const char *MEDIA_MIMETYPE_VIDEO_FFMPEG;
+extern const char *MEDIA_MIMETYPE_VIDEO_WMV;
+extern const char *MEDIA_MIMETYPE_VIDEO_DIVX;
+extern const char *MEDIA_MIMETYPE_VIDEO_FLV;
+extern const char *MEDIA_MIMETYPE_VIDEO_VC1;
+extern const char *MEDIA_MIMETYPE_VIDEO_WMV3;
+
+extern const char *MEDIA_MIMETYPE_AUDIO_WMA;
+extern const char *MEDIA_MIMETYPE_AUDIO_WMAPRO;
+extern const char *MEDIA_MIMETYPE_AUDIO_WAV;
+
+
 // These are values exported to JAVA API that need to be in sync with
 // frameworks/base/media/java/android/media/AudioFormat.java. Unfortunately,
 // they are not defined in frameworks/av, so defining them here.

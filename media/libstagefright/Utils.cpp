@@ -751,6 +751,37 @@ status_t convertMetaDataToMessage(
         if (meta->findInt32(kKeyPcmEncoding, &pcmEncoding)) {
             msg->setInt32("pcm-encoding", pcmEncoding);
         }
+        int32_t blockAlign;
+        if (meta->findInt32(kKeyBlockAlign, &blockAlign)) {
+           msg->setInt32("block-align", blockAlign);
+        }
+
+        int32_t wmaVersion;
+        if (meta->findInt32(kKeyWMAVersion, &wmaVersion)) {
+            if (wmaVersion == kTypeWMA) {
+                msg->setInt32("wma-format", OMX_AUDIO_WMAFormat7);
+            } else if (wmaVersion == kTypeWMAPro) {
+                msg->setInt32("wma-format", OMX_AUDIO_WMAFormat8);
+            } else if (wmaVersion == kTypeWMALossLess) {
+                msg->setInt32("wma-format", OMX_AUDIO_WMAFormat9);
+            }
+        }
+
+        int32_t codecId;
+        if (meta->findInt32(kKeyCodecId, &codecId)) {
+            msg->setInt32("ffmpeg-codec-id", codecId);
+        }
+
+        int32_t sampleFormat;
+        if (meta->findInt32(kKeySampleFormat, &sampleFormat)) {
+            msg->setInt32("sample-format", sampleFormat);
+        }
+
+        int32_t bitPerSample = 0;
+        if (meta->findInt32(kKeyBitsPerRawSample, &bitPerSample)) {
+            msg->setInt32("bit-per-sample", bitPerSample);
+        }
+
     }
 
     int32_t maxInputSize;
@@ -1578,6 +1609,7 @@ static const struct mime_conv_t mimeLookup[] = {
     { MEDIA_MIMETYPE_AUDIO_OPUS,        AUDIO_FORMAT_OPUS},
     { MEDIA_MIMETYPE_AUDIO_AC3,         AUDIO_FORMAT_AC3},
     { MEDIA_MIMETYPE_AUDIO_FLAC,        AUDIO_FORMAT_FLAC},
+    { MEDIA_MIMETYPE_AUDIO_WMA,         AUDIO_FORMAT_WMA},
     { 0, AUDIO_FORMAT_INVALID }
 };
 
