@@ -28,6 +28,42 @@
 
 namespace android {
 
+extern const char *MEDIA_MIMETYPE_CONTAINER_WIMO_VER1;
+extern const char *MEDIA_MIMETYPE_CONTAINER_WMV;
+extern const char *MEDIA_MIMETYPE_CONTAINER_MPG;
+extern const char *MEDIA_MIMETYPE_CONTAINER_FLV;
+extern const char *MEDIA_MIMETYPE_CONTAINER_MOV;
+extern const char *MEDIA_MIMETYPE_CONTAINER_WMA;
+extern const char *MEDIA_MIMETYPE_CONTAINER_ASF;
+extern const char *MEDIA_MIMETYPE_CONTAINER_REALVIDEO;
+extern const char *MEDIA_MIMETYPE_CONTAINER_APE;
+extern const char *MEDIA_MIMETYPE_CONTAINER_DTS;
+extern const char *MEDIA_MIMETYPE_CONTAINER_FLAC;
+extern const char *MEDIA_MIMETYPE_CONTAINER_VC1;
+extern const char *MEDIA_MIMETYPE_CONTAINER_HEVC;
+extern const char *MEDIA_MIMETYPE_CONTAINER_DIVX;
+extern const char *MEDIA_MIMETYPE_CONTAINER_WEBM;
+extern const char *MEDIA_MIMETYPE_CONTAINER_RM;
+extern const char *MEDIA_MIMETYPE_CONTAINER_MP2;
+extern const char *MEDIA_MIMETYPE_CONTAINER_RA;
+extern const char *MEDIA_MIMETYPE_CONTAINER_FFMPEG;
+extern const char *MEDIA_MIMETYPE_AUDIO_ALAC;
+extern const char *MEDIA_MIMETYPE_AUDIO_RA;
+extern const char *MEDIA_MIMETYPE_AUDIO_FFMPEG;
+extern const char *MEDIA_MIMETYPE_AUDIO_DTS;
+extern const char *MEDIA_MIMETYPE_AUDIO_APE;
+extern const char *MEDIA_MIMETYPE_VIDEO_REALVIDEO;
+extern const char *MEDIA_MIMETYPE_VIDEO_FFMPEG;
+extern const char *MEDIA_MIMETYPE_VIDEO_WMV;
+extern const char *MEDIA_MIMETYPE_VIDEO_DIVX;
+extern const char *MEDIA_MIMETYPE_VIDEO_FLV;
+extern const char *MEDIA_MIMETYPE_VIDEO_VC1;
+extern const char *MEDIA_MIMETYPE_VIDEO_WMV3;
+
+extern const char *MEDIA_MIMETYPE_AUDIO_WMA;
+extern const char *MEDIA_MIMETYPE_AUDIO_WMAPRO;
+extern const char *MEDIA_MIMETYPE_AUDIO_WAV;
+
 struct AMessage;
 status_t convertMetaDataToMessage(
         const sp<MetaData> &meta, sp<AMessage> *format);

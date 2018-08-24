@@ -116,6 +116,15 @@ const char *GetComponentRole(bool isEncoder, const char *mime) {
         const char *encoderRole;
     };
 
+    //add for ffmpeg extractor
+    const char *MEDIA_MIMETYPE_AUDIO_DTS = "audio/ffm-dts";
+    const char *MEDIA_MIMETYPE_VIDEO_VC1 =  "video/wvc1";
+    const char *MEDIA_MIMETYPE_VIDEO_WMV3 =  "video/x-ms-wmv";
+    const char *MEDIA_MIMETYPE_VIDEO_FLV = "video/flv";
+
+    const char *MEDIA_MIMETYPE_AUDIO_WMA = "audio/x-ms-wma";
+    const char *MEDIA_MIMETYPE_AUDIO_WAV = "audio/wav";//pcm/adpcm
+
     static const MimeToRole kMimeToRole[] = {
         { MEDIA_MIMETYPE_AUDIO_MPEG,
             "audio_decoder.mp3", "audio_encoder.mp3" },

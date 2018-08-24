@@ -225,6 +225,9 @@ enum {
     kKeyExifOffset       = 'exof', // int64_t, Exif data offset
     kKeyExifSize         = 'exsz', // int64_t, Exif data size
     kKeyIsExif           = 'exif', // bool (int32_t) buffer contains exif data block
+};
+
+enum {
     //add for ffmpeg plugin
     kKeyExtraData        = 'extr', // raw data extra data
     kKeyBitsPerRawSample = 'bprs', // int32_t
