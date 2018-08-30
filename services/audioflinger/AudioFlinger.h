@@ -839,7 +839,7 @@ private:
     bool    mIsDeviceTypeKnown;
     int64_t mTotalMemory;
     std::atomic<size_t> mClientSharedHeapSize;
-    static constexpr size_t kMinimumClientSharedHeapSizeBytes = 1024 * 1024; // 1MB
+    static constexpr size_t kMinimumClientSharedHeapSizeBytes = 2 * 1024 * 1024; // 2MB
 
     nsecs_t mGlobalEffectEnableTime;  // when a global effect was last enabled
 
