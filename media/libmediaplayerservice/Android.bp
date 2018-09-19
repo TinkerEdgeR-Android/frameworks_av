@@ -2,7 +2,8 @@
 cc_defaults {
     name: "librkplayer_defaults",
     srcs: [
-        "FFPlayer.cpp"
+        "FFPlayer.cpp",
+        "RkRetriever.cpp",
     ],
     cflags: [
         "-DUSE_FFPLAYER",

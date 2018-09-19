@@ -42,6 +42,9 @@
 #include "StagefrightMetadataRetriever.h"
 #include "MediaPlayerFactory.h"
 
+#ifdef USE_FFPLAYER
+#include "RkRetriever.h"
+#endif
 namespace android {
 
 MetadataRetrieverClient::MetadataRetrieverClient(pid_t pid)
@@ -83,18 +86,43 @@ void MetadataRetrieverClient::disconnect()
 static sp<MediaMetadataRetrieverBase> createRetriever(player_type playerType)
 {
     sp<MediaMetadataRetrieverBase> p;
+    char value[PROPERTY_VALUE_MAX];
     switch (playerType) {
         case STAGEFRIGHT_PLAYER:
         case NU_PLAYER:
         case FF_PLAYER:
         {
-            p = new StagefrightMetadataRetriever;
+            #ifdef USE_FFPLAYER
+                if(property_get("vendor.cts_gts.status", value, NULL)
+                    && !strcasecmp("true", value)){
+                    ALOGD("Create Instance of StagefrightMetaDataRetriever");
+                    p = new StagefrightMetadataRetriever;
+                } else {
+                    ALOGD("Create Instance of RockMetaDataRetriever");
+                    p =  new RkRetriever;
+                }
+            #else
+                ALOGD("Create Instance of StagefrightMetaDataRetriever");
+                p = new StagefrightMetadataRetriever;
+            #endif
             break;
         }
         default:
             // TODO:
             // support for TEST_PLAYER
-            ALOGE("player type %d is not supported",  playerType);
+            #ifdef USE_FFPLAYER
+                if(property_get("vendor.cts_gts.status", value, NULL)
+                    && !strcasecmp("true", value)){
+                    ALOGD("Create Instance of StagefrightMetaDataRetriever");
+                    p = new StagefrightMetadataRetriever;
+                } else {
+                    ALOGD("Create Instance of RockMetaDataRetriever");
+                    p =  new RkRetriever;
+                }
+
+            #else
+                ALOGE("player type %d is not supported",  playerType);
+            #endif
             break;
     }
     if (p == NULL) {

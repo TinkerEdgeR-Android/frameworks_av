@@ -1,17 +1,26 @@
-#ifndef RK_METADATA_RETRIEVER_H
-#define RK_METADATA_RETRIEVER_H
+/*
+**
+** Copyright 2009, The Android Open Source Project
+**
+** Licensed under the Apache License, Version 2.0 (the "License");
+** you may not use this file except in compliance with the License.
+** You may obtain a copy of the License at
+**
+**     http://www.apache.org/licenses/LICENSE-2.0
+**
+** Unless required by applicable law or agreed to in writing, software
+** distributed under the License is distributed on an "AS IS" BASIS,
+** WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+** See the License for the specific language governing permissions and
+** limitations under the License.
+*/
+
+#ifndef ANDROID_RETRIEVER_H
+#define ANDROID_RETRIEVER_H
 
 #include <media/MediaMetadataRetrieverInterface.h>
-#include <utils/KeyedVector.h>
 
-#ifdef AVS50
-#include <media/IMediaHTTPService.h>
-#endif
-
-namespace android
-{
-
-class RetrieverDelegate;
+namespace android {
 
 #ifdef AVS90
 #ifndef MediaMetadataRetrieverInterface
@@ -19,11 +28,15 @@ class RetrieverDelegate;
 #endif
 #endif
 
-class RK_MetadataRetriever: public MediaMetadataRetrieverInterface
-{
+class RK_MetadataRetriever;
+typedef int (*CreateRetriever)(RK_MetadataRetriever **mediaRetriever);
+typedef int (*DestroyRetriever)(RK_MetadataRetriever **mediaRetriever);
+
+class RkRetriever : public MediaMetadataRetrieverInterface {
 public:
-    RK_MetadataRetriever();
-    virtual ~RK_MetadataRetriever();
+   public:
+    RkRetriever();
+    virtual ~RkRetriever();
 #ifdef AVS60
     virtual status_t            setDataSource(const sp<DataSource>& source){return NO_ERROR;};
     virtual status_t            setDataSource(const sp<DataSource>& source, const char *mime){return NO_ERROR;};
@@ -46,15 +59,21 @@ public:
     virtual VideoFrame*         getFrameAtTime(int64_t timeUs, int option);
     virtual VideoFrame*         getFrameAtTime(int64_t timeUs, int option, int colorFormat, bool metaOnly);
 #endif
+
     virtual MediaAlbumArt*      extractAlbumArt();
     virtual const char*         extractMetadata(int keyCode);
-
 private:
-    RetrieverDelegate *mRetrieverDelegate;
 
-    RK_MetadataRetriever(const RK_MetadataRetriever &);
-    RK_MetadataRetriever &operator=(const RK_MetadataRetriever &);
+    RK_MetadataRetriever *mMediaRetriever;
+    void *mVendorLibHandle;
 
+    RkRetriever(const RkRetriever &);
+    RkRetriever &operator=(const RkRetriever &);
+
+    void createRetriever(const char *libname);
+    void destroyRetriever();
 };
-}
-#endif // RK_METADATA_RETRIEVER_H
+
+}  // namespace android
+
+#endif  // ANDROID_RETRIEVER_H
