@@ -34,7 +34,7 @@ public:
 
     // Treblized media codec list will be located in /odm/etc or /vendor/etc.
     static constexpr char const* defaultSearchDirs[] =
-            {"/odm/etc", "/vendor/etc2", "/etc", nullptr};
+            {"/oem/etc", "/odm/etc", "/vendor/etc", "/etc", nullptr};
     static constexpr char const* defaultMainXmlName =
             "media_codecs.xml";
     static constexpr char const* defaultPerformanceXmlName =
