@@ -2338,6 +2338,19 @@ status_t AudioFlinger::PlaybackThread::addTrack_l(const sp<Track>& track)
             track->mFillingUpStatus = mStandby ? Track::FS_FILLING : Track::FS_FILLED;
         } else {
             track->mRetryCount = kMaxTrackStartupRetries;
+            /*
+             * we give the more retry count if track is used for AUDIO_USAGE_VIRTUAL_SOURCE
+             * When a AudioTrack(OUT_REMOTE_SUBMIX) is created to play audio datas,
+             * and a AudioRecord(IN_REMOTE_SUBMIX) is created to record audio datas,
+             * when the AudioRecord is created or started, the AudioTrack may be removed because no datas
+             * to play, threadLoop_removeTracks will stop the output, and set IN_REMOTE_SUBMIX device
+             * set to unavalable state, this will lead to  create or start AudioRecord fail. This situation
+             * happened when we test google's remote.service and katniss. The key of the problem is that
+             * the audiotrack removed, and right now the the audiorecord is created or started.
+             */
+            if (track->isExternalTrack() && track->mAttr.usage == AUDIO_USAGE_VIRTUAL_SOURCE) {
+                track->mRetryCount = kMaxTrackStartupRetries*2;
+            }
             track->mFillingUpStatus =
                     track->sharedBuffer() != 0 ? Track::FS_FILLED : Track::FS_FILLING;
         }
@@ -4729,7 +4742,10 @@ AudioFlinger::PlaybackThread::mixer_state AudioFlinger::MixerThread::prepareTrac
 
             // reset retry count
             track->mRetryCount = kMaxTrackRetries;
-
+            // we give the more retry count if track is used for AUDIO_USAGE_VIRTUAL_SOURCE
+            if (track->isExternalTrack() && track->mAttr.usage == AUDIO_USAGE_VIRTUAL_SOURCE) {
+                track->mRetryCount = kMaxTrackRetries*2;
+            }
             // If one track is ready, set the mixer ready if:
             //  - the mixer was not ready during previous round OR
             //  - no other track is not ready
