@@ -327,20 +327,45 @@ AudioTrack::~AudioTrack()
         // it is looping on buffer full condition in obtainBuffer().
         // Otherwise the callback thread will never exit.
         stop();
-        if (mAudioTrackThread != 0) {
+    }
+
+    /*
+     * mAudioTrackThread may be created before(call set function),
+     * and restoreTrack_l may fail if audio route changed when audio device is unavailable now,
+     * then mStatus will be set error status, so when this audiotrack release, must let
+     * mAudioTrackThread quit.
+     */
+    if (mAudioTrackThread != 0) {
+        if(mProxy != NULL)
             mProxy->interrupt();
-            mAudioTrackThread->requestExit();   // see comment in AudioTrack.h
-            mAudioTrackThread->requestExitAndWait();
-            mAudioTrackThread.clear();
-        }
+        mAudioTrackThread->requestExit();   // see comment in AudioTrack.h
+        mAudioTrackThread->requestExitAndWait();
+        mAudioTrackThread.clear();
+        mAudioTrackThread = NULL;
+    }
+
+   /*if (mStatus == NO_ERROR)*/ {
         // No lock here: worst case we remove a NULL callback which will be a nop
         if (mDeviceCallback != 0 && mOutput != AUDIO_IO_HANDLE_NONE) {
             AudioSystem::removeAudioDeviceCallback(this, mOutput);
+            mDeviceCallback = NULL;
         }
-        IInterface::asBinder(mAudioTrack)->unlinkToDeath(mDeathNotifier, this);
-        mAudioTrack.clear();
-        mCblkMemory.clear();
-        mSharedBuffer.clear();
+
+        if(mAudioTrack != NULL) {
+            IInterface::asBinder(mAudioTrack)->unlinkToDeath(mDeathNotifier, this);
+            mAudioTrack.clear();
+            mAudioTrack = NULL;
+        }
+
+        if(mCblkMemory != NULL) {
+            mCblkMemory.clear();
+            mCblkMemory = NULL;
+        }
+
+        if(mSharedBuffer != NULL) {
+            mSharedBuffer.clear();
+            mSharedBuffer = NULL;
+        }
         IPCThreadState::self()->flushCommands();
         ALOGV("~AudioTrack, releasing session id %d from %d on behalf of %d",
                 mSessionId, IPCThreadState::self()->getCallingPid(), mClientPid);

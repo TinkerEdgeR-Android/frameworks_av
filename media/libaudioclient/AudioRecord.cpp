@@ -193,20 +193,44 @@ AudioRecord::~AudioRecord()
         // it is looping on buffer empty condition in obtainBuffer().
         // Otherwise the callback thread will never exit.
         stop();
-        if (mAudioRecordThread != 0) {
+    }
+
+    /*
+     * mAudioRecordThread may be created before(call set function),
+     * and restoreRecord_l may fail if audio route changed when audio device is unavailable now,
+     * theb mStatus will be set error status, so when this audiotrack release, must let
+     * mAudioRecordThread quit.
+     */
+    if (mAudioRecordThread != 0) {
+        if(mProxy != NULL)
             mProxy->interrupt();
-            mAudioRecordThread->requestExit();  // see comment in AudioRecord.h
-            mAudioRecordThread->requestExitAndWait();
-            mAudioRecordThread.clear();
-        }
+        mAudioRecordThread->requestExit();  // see comment in AudioRecord.h
+        mAudioRecordThread->requestExitAndWait();
+        mAudioRecordThread.clear();
+    }
+
+    /*if (mStatus == NO_ERROR) */{
         // No lock here: worst case we remove a NULL callback which will be a nop
         if (mDeviceCallback != 0 && mInput != AUDIO_IO_HANDLE_NONE) {
             AudioSystem::removeAudioDeviceCallback(this, mInput);
         }
-        IInterface::asBinder(mAudioRecord)->unlinkToDeath(mDeathNotifier, this);
-        mAudioRecord.clear();
-        mCblkMemory.clear();
-        mBufferMemory.clear();
+
+        if(mAudioRecord != NULL) {
+            IInterface::asBinder(mAudioRecord)->unlinkToDeath(mDeathNotifier, this);
+            mAudioRecord.clear();
+            mAudioRecord = NULL;
+        }
+
+        if(mCblkMemory != NULL) {
+            mCblkMemory.clear();
+            mCblkMemory = NULL;
+        }
+
+        if(mBufferMemory != NULL) {
+            mBufferMemory.clear();
+            mBufferMemory = NULL;
+        }
+
         IPCThreadState::self()->flushCommands();
         ALOGV("~AudioRecord, releasing session id %d",
                 mSessionId);
