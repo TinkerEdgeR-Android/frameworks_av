@@ -943,8 +943,8 @@ status_t Parameters::initialize(const CameraMetadata *info, int deviceVersion) {
         // Slow jpeg devices does not support video snapshot without
         // slowing down preview.
         // TODO: support video size video snapshot only?
-        params.set(CameraParameters::KEY_VIDEO_SNAPSHOT_SUPPORTED,
-            CameraParameters::FALSE);
+        //params.set(CameraParameters::KEY_VIDEO_SNAPSHOT_SUPPORTED,
+        //    CameraParameters::FALSE);
     }
 
     isZslReprocessPresent = false;
