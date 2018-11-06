@@ -1278,6 +1278,7 @@ Status CameraService::connectHelper(const sp<CALLBACK>& cameraCb, const String8&
     binder::Status ret = binder::Status::ok();
 
     String8 clientName8(clientPackageName);
+    property_set("sys.camera.callprocess", clientName8.string());
 
     int originalClientPid = 0;
 

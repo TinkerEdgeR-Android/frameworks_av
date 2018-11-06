@@ -451,7 +451,8 @@ status_t CameraClient::startRecordingMode() {
 
     // start recording mode
     enableMsgType(CAMERA_MSG_VIDEO_FRAME);
-    sCameraService->playSound(CameraService::SOUND_RECORDING_START);
+    if (mPlayShutterSound)
+        sCameraService->playSound(CameraService::SOUND_RECORDING_START);
     result = mHardware->startRecording();
     if (result != NO_ERROR) {
         ALOGE("mHardware->startRecording() failed with status %d", result);
@@ -484,7 +485,8 @@ void CameraClient::stopRecording() {
 
         disableMsgType(CAMERA_MSG_VIDEO_FRAME);
         mHardware->stopRecording();
-        sCameraService->playSound(CameraService::SOUND_RECORDING_STOP);
+        if (mPlayShutterSound)
+            sCameraService->playSound(CameraService::SOUND_RECORDING_STOP);
 
         mPreviewBuffer.clear();
     }
