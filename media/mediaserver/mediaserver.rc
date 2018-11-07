@@ -4,3 +4,10 @@ service media /system/bin/mediaserver
     group audio camera inet net_bt net_bt_admin net_bw_acct drmrpc mediadrm sdcard_rw media_rw system
     ioprio rt 4
     writepid /dev/cpuset/foreground/tasks /dev/stune/foreground/tasks
+
+#for bd
+service iso_operate /system/bin/iso
+    class main
+    group media_rw
+    disabled
+    oneshot
