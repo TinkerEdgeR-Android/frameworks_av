@@ -61,6 +61,9 @@ public:
     virtual status_t getMetadata(
             const media::Metadata::Filter& ids, Parcel *records);
 
+    virtual status_t getPlaybackSettings(AudioPlaybackRate* rate);
+    virtual status_t setPlaybackSettings(const AudioPlaybackRate& rate);
+
     virtual status_t dump(int fd, const Vector<String16> &args) const;
 
 private:

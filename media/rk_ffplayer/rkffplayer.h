@@ -44,7 +44,8 @@ public:
     FFVirtual status_t            setParameter(int key, const Parcel &request);
     FFVirtual uint32_t            flags() const ;
     FFVirtual status_t            setLooping(int loop) ;
-
+    FFVirtual status_t            getPlaybackSettings(AudioPlaybackRate* rate);
+    FFVirtual status_t            setPlaybackSettings(const AudioPlaybackRate& rate);
 private:
     FFPlayerDelegate* mPlayer;
 

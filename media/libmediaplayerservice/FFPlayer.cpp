@@ -264,6 +264,14 @@ status_t FFPlayer::getMetadata(
     return OK;
 }
 
+status_t FFPlayer::getPlaybackSettings(AudioPlaybackRate* rate) {
+    return mPlayer->getPlaybackSettings(rate);
+}
+
+status_t FFPlayer::setPlaybackSettings(const AudioPlaybackRate& rate) {
+    return mPlayer->setPlaybackSettings(rate);
+}
+
 status_t FFPlayer::dump(int fd, const Vector<String16> &args) const {
     //return INVALID_OPERATION;
     return mPlayer->dump(fd, args);
