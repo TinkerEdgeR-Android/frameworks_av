@@ -265,8 +265,14 @@ void MediaClock::processTimers_l() {
     std::multimap<int64_t, Timer> notifyList;
     auto it = mTimers.begin();
     while (it != mTimers.end()) {
-        double diff = it->mAdjustRealUs * (double)mPlaybackRate
-            + it->mMediaTimeUs - nowMediaTimeUs;
+        double diff = INT64_MAX;
+        if (it->mMediaTimeUs == INT64_MAX) {
+            diff = 40 * 1000;
+            it->mMediaTimeUs = 0;
+        } else {
+            diff = it->mAdjustRealUs * (double)mPlaybackRate
+                + it->mMediaTimeUs - nowMediaTimeUs;
+        }
         int64_t diffMediaUs;
         if (diff > (double)INT64_MAX) {
             diffMediaUs = INT64_MAX;
