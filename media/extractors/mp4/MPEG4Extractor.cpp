@@ -23,7 +23,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-
+ 
 #include <utils/Log.h>
 
 #include "MPEG4Extractor.h"
@@ -5128,11 +5128,19 @@ status_t MPEG4Source::fragmentedRead(
     MetaDataBase &bufmeta = mBuffer->meta_data();
     bufmeta.clear();
     if (smpl->encryptedsizes.size()) {
+        int32_t clearSizesArray[smpl->encryptedsizes.size()];
+        int32_t encryptSizesArray[smpl->encryptedsizes.size()];
         // store clear/encrypted lengths in metadata
+        for (int i = 0; i < (int)smpl->encryptedsizes.size(); i++) {
+            ALOGE("%s %d in clear_size: %d, encry_size: %d sizeof(unsigned long): %d",
+              __FUNCTION__, __LINE__, (int)smpl->clearsizes.array()[i], (int)smpl->encryptedsizes.array()[i], (int)sizeof(unsigned long));
+              clearSizesArray[i] = (int)smpl->clearsizes.array()[i];
+              encryptSizesArray[i] = (int)smpl->encryptedsizes.array()[i];
+        }
         bufmeta.setData(kKeyPlainSizes, 0,
-                smpl->clearsizes.array(), smpl->clearsizes.size() * 4);
+                clearSizesArray, smpl->clearsizes.size() * 4);
         bufmeta.setData(kKeyEncryptedSizes, 0,
-                smpl->encryptedsizes.array(), smpl->encryptedsizes.size() * 4);
+                encryptSizesArray, smpl->encryptedsizes.size() * 4);
         bufmeta.setInt32(kKeyCryptoDefaultIVSize, mDefaultIVSize);
         bufmeta.setInt32(kKeyCryptoMode, mCryptoMode);
         bufmeta.setData(kKeyCryptoKey, 0, mCryptoKey, 16);
