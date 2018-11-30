@@ -1283,6 +1283,11 @@ void NuPlayer::Renderer::postDrainVideoQueue() {
     if (!mHasAudio) {
         // smooth out videos >= 10fps
         mMediaClock->updateMaxTimeMedia(mNextVideoTimeMediaUs);
+        int64_t mediaUs = 0;
+        mMediaClock->getMediaTime(nowUs, &mediaUs);
+        if (mediaTimeUs - mediaUs > 500000) {
+            mMediaClock->updateAnchor(mediaTimeUs, nowUs, mediaTimeUs);
+        }
     }
 
     if (!mVideoSampleReceived || mediaTimeUs < mAudioFirstAnchorTimeMediaUs) {
