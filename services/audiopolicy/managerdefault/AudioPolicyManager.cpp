@@ -80,6 +80,15 @@ static const audio_format_t AAC_FORMATS[] = {
     AUDIO_FORMAT_AAC_XHE,
 };
 
+static bool isAtv() {
+    char value[PROPERTY_VALUE_MAX];
+    property_get("ro.target.product", value, "");
+    if(!strcmp(value,"box") || !strcmp(value,"atv")){
+        return true;
+    }
+    return false;
+}
+
 // ----------------------------------------------------------------------------
 // AudioPolicyInterface implementation
 // ----------------------------------------------------------------------------
@@ -5964,7 +5973,8 @@ void AudioPolicyManager::cleanUpForDevice(const sp<DeviceDescriptor>& deviceDesc
 void AudioPolicyManager::filterSurroundFormats(FormatVector *formatsPtr) {
     FormatVector &formats = *formatsPtr;
     // TODO Set this based on Config properties.
-    const bool alwaysForceAC3 = true;
+    // hh@rock-chips.com not alway force ac3 enable, enable it by read hdmi's EIDI
+    const bool alwaysForceAC3 = isAtv()?false:true;
 
     audio_policy_forced_cfg_t forceUse = mEngine->getForceUse(
             AUDIO_POLICY_FORCE_FOR_ENCODED_SURROUND);
