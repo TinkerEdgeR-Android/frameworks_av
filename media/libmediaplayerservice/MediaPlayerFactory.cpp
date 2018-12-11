@@ -171,19 +171,25 @@ player_type MediaPlayerFactory::getPlayerType(const sp<IMediaPlayer>& client,
                                               int64_t length) {
 #ifdef USE_FFPLAYER
     String8 filePath;
-    getFileName(fd,&filePath);
-    if(strstr(filePath.string(),".ogg")){
+    getFileName(fd, &filePath);
+
+    if (strstr(filePath.string(), ".ogg")) {
         return NU_PLAYER;
     }
 
-    if(strstr(filePath.string(),".wvm")){
+    if (strstr(filePath.string(), ".wvm")) {
         return NU_PLAYER;
     }
 
-    if(strstr(filePath.string(),".mid")){
+    if (strstr(filePath.string(), ".mp3")) {
+        return NU_PLAYER;
+    }
+
+    if (strstr(filePath.string(), ".mid")) {
         return NU_PLAYER;
     }
 #endif
+
     GET_PLAYER_TYPE_IMPL(client, fd, offset, length);
 }
 
