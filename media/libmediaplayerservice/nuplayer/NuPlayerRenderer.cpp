@@ -1332,10 +1332,10 @@ void NuPlayer::Renderer::onDrainVideoQueue() {
 
     if (!mPaused) {
         setVideoLateByUs(nowUs - realTimeUs);
-        tooLate = (mVideoLateByUs > 40000);
+        tooLate = (mVideoLateByUs > 100000);
 
         if (tooLate) {
-            ALOGV("video late by %lld us (%.2f secs)",
+            ALOGW("video late by %lld us (%.2f secs)",
                  (long long)mVideoLateByUs, mVideoLateByUs / 1E6);
         } else {
             int64_t mediaUs = 0;

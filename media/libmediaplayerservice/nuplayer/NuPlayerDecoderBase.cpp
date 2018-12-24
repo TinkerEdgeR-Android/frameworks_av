@@ -65,7 +65,9 @@ status_t PostAndAwaitResponse(
 void NuPlayer::DecoderBase::configure(const sp<AMessage> &format) {
     sp<AMessage> msg = new AMessage(kWhatConfigure, this);
     msg->setMessage("format", format);
-    msg->post();
+
+    sp<AMessage> response;
+    PostAndAwaitResponse(msg, &response);
 }
 
 void NuPlayer::DecoderBase::init() {
@@ -129,9 +131,13 @@ void NuPlayer::DecoderBase::onMessageReceived(const sp<AMessage> &msg) {
     switch (msg->what()) {
         case kWhatConfigure:
         {
+            sp<AReplyToken> replyID;
+            CHECK(msg->senderAwaitsResponse(&replyID));
             sp<AMessage> format;
             CHECK(msg->findMessage("format", &format));
             onConfigure(format);
+
+            (new AMessage)->postReply(replyID);
             break;
         }
 

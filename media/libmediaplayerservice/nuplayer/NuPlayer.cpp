@@ -1468,7 +1468,10 @@ void NuPlayer::onResume() {
     }
     // |mAudioDecoder| may have been released due to the pause timeout, so re-create it if
     // needed.
-    if (audioDecoderStillNeeded() && mAudioDecoder == NULL) {
+    // by the way, this case should video init ofter.
+    if (audioDecoderStillNeeded()
+            && mAudioDecoder == NULL
+            && (mVideoDecoder != NULL || mSurface == NULL)) {
         instantiateDecoder(true /* audio */, &mAudioDecoder);
     }
     if (mRenderer != NULL) {
