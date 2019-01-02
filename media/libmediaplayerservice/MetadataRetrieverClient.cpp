@@ -91,7 +91,17 @@ static sp<MediaMetadataRetrieverBase> createRetriever(player_type playerType)
         case STAGEFRIGHT_PLAYER:
         case NU_PLAYER:
         {
-            p = new StagefrightMetadataRetriever;
+            #ifdef USE_FFPLAYER
+                if(property_get("use_nuplayer", value, NULL)
+                    && !strcasecmp("true", value)){
+                    ALOGD("Create Instance of RockMetaDataRetriever");
+                    p =  new RkRetriever;
+                } else {
+                    p = new StagefrightMetadataRetriever;
+                }
+            #else
+                p = new StagefrightMetadataRetriever;
+            #endif
             break;
         }
         case FF_PLAYER:
