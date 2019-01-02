@@ -332,6 +332,10 @@ void NuPlayer::Decoder::onConfigure(const sp<AMessage> &format) {
     if (!format->findPointer("crypto", &pCrypto)) {
         pCrypto = NULL;
     }
+
+    // push blank buffer for clear last video picture
+    format->setInt32("push-blank-buffers-on-shutdown", 1);
+
     sp<ICrypto> crypto = (ICrypto*)pCrypto;
     // non-encrypted source won't have a crypto
     mIsEncrypted = (crypto != NULL);
