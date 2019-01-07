@@ -173,6 +173,13 @@ player_type MediaPlayerFactory::getPlayerType(const sp<IMediaPlayer>& client,
     String8 filePath;
     getFileName(fd, &filePath);
 
+    if (strstr(filePath.string(), "alarm_alert_cache")
+        || strstr(filePath.string(), "notification_sound_cache")
+        || strstr(filePath.string(), "ringtone_cache")
+        || strstr(filePath.string(), "framework-res.apk" )) {
+        return NU_PLAYER;
+    }
+
     if (strstr(filePath.string(), ".ogg")) {
         return NU_PLAYER;
     }
