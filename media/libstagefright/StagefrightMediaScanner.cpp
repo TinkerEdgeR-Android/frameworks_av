@@ -42,7 +42,7 @@ static bool FileHasAcceptableExtension(const char *extension) {
         ".mkv", ".mka", ".webm", ".ts", ".fl", ".flac", ".mxmf",
         ".avi", ".mpeg", ".mpg", ".awb", ".mpga", ".mov", ".m4v",
         ".oga", ".asf", ".trp", ".mp2", ".mp1", ".f4v", ".mts",
-        ".dcf", ".flv", ".tp", ".m2ts"
+        ".dcf", ".flv", ".tp", ".m2ts", ".vob"
     };
     static const size_t kNumValidExtensions =
         sizeof(kValidExtensions) / sizeof(kValidExtensions[0]);
