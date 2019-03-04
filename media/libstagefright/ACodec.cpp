@@ -70,6 +70,36 @@ enum {
     kMaxIndicesToCheck = 32, // used when enumerating supported formats and profiles
 };
 
+#define    OMX_IndexParamVideoHDRRockchipExtensions 0x70000001  /**< reference: OMX_EXTENSION_VIDEO_PARAM_HDR */
+ 
+/**
+ * colorspace 
+ */
+typedef enum OMX_ROCKCHIP_EXT_COLORSPACE {
+    OMX_RK_EXT_ColorspaceBT709 = 1,
+    OMX_RK_EXT_ColorspaceBT2020,
+    OMX_RK_EXT_ColorspaceMax = 0x7FFFFFFF
+} OMX_RK_EXT_COLORSPACE;
+
+/**
+ * dynamic range
+ */
+typedef enum OMX_ROCKCHIP_EXT_DYNCRANGE {
+    OMX_RK_EXT_DyncrangeSDR = 0,
+    OMX_RK_EXT_DyncrangeHDR10,
+    OMX_RK_EXT_DyncrangeHDRHLG,
+    OMX_RK_EXT_DyncrangeHDRDOLBY,
+    OMX_RK_EXT_DyncrangeMax = 0x7FFFFFFF
+} OMX_RK_EXT_DYNCRANGE;
+
+/* Structure Rockchip extension HDR param of the component */
+typedef struct OMX_EXTENSION_VIDEO_PARAM_HDR {
+    OMX_U32 nSize;                  /**< size of the structure in bytes */
+    OMX_VERSIONTYPE nVersion;       /**< OMX specification version information */
+    OMX_RK_EXT_COLORSPACE eColorSpace;    /**< Color space */
+    OMX_RK_EXT_DYNCRANGE eDyncRange;    /**< dynamic range */
+} OMX_EXTENSION_VIDEO_PARAM_HDR;
+
 // OMX errors are directly mapped into status_t range if
 // there is no corresponding MediaError status code.
 // Use the statusFromOMXError(int32_t omxError) function.
@@ -1103,6 +1133,41 @@ status_t ACodec::setupNativeWindowSizeFormatAndUsage(
     }
 
     usage |= kVideoGrallocUsage;
+    OMX_EXTENSION_VIDEO_PARAM_HDR hdrParams;
+    InitOMXParams(&hdrParams);
+    err = mOMXNode->getParameter((OMX_INDEXTYPE)OMX_IndexParamVideoHDRRockchipExtensions, &hdrParams, sizeof(hdrParams));
+    ALOGE("%s %d colorSpace = %x,eDyncRange = %x",__FUNCTION__,__LINE__,hdrParams.eColorSpace,hdrParams.eDyncRange);
+    switch(hdrParams.eDyncRange) {
+        case OMX_RK_EXT_DyncrangeHDR10: {
+            usage |= ((2 << 24) & 0x0f000000); //HDR10
+            break;
+        }
+        case OMX_RK_EXT_DyncrangeHDRHLG: {
+            usage |= ((3 << 24) & 0x0f000000); //HDR HLG
+            break;
+        }
+        case OMX_RK_EXT_DyncrangeHDRDOLBY: {
+            usage |= ((4 << 24) & 0x0f000000); //HDR DOBLY VERSION
+            break;
+        }
+        default:
+            break;
+    }
+
+    switch(hdrParams.eColorSpace) {
+        case OMX_RK_EXT_ColorspaceBT709: {
+            usage |= GRALLOC_USAGE_PRIVATE_0; //BT709
+            break;
+        }
+        case OMX_RK_EXT_ColorspaceBT2020: {
+            if (hdrParams.eDyncRange != OMX_RK_EXT_DyncrangeHDR10 && hdrParams.eDyncRange != OMX_RK_EXT_DyncrangeHDRHLG)
+                usage |= ((1 << 24) & 0x0f000000); //BT2020
+            break;
+        }
+        default:
+            break;
+    }
+    //native_window_set_buffers_data_space(mNativeWindow.get(), 0x11c60000);
     *finalUsage = usage;
 
     memset(&mLastNativeWindowCrop, 0, sizeof(mLastNativeWindowCrop));
