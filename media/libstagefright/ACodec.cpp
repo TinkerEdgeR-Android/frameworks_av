@@ -62,6 +62,8 @@
 #include <media/stagefright/omx/OMXUtils.h>
 #include <media/stagefright/Utils.h>
 
+#include <cutils/properties.h>
+
 namespace android {
 
 using binder::Status;
@@ -6876,6 +6878,17 @@ bool ACodec::UninitializedState::onAllocateComponent(const sp<AMessage> &msg) {
     pid_t tid = gettid();
     int prevPriority = androidGetThreadPriority(tid);
     androidSetThreadPriority(tid, ANDROID_PRIORITY_FOREGROUND);
+#ifdef RK3368
+    char value[PROPERTY_VALUE_MAX];
+    if (property_get("vendor.cts_gts.exo.gts", value, NULL) && !strcasecmp("true", value)){
+        if(strstr(componentName.c_str(),"rk") && strstr(componentName.c_str(),"hevc")){
+            componentName = "OMX.google.hevc.decoder";
+        }
+        if(strstr(componentName.c_str(),"rk") && strstr(componentName.c_str(),"avc")){
+            componentName = "OMX.google.h264.decoder";
+        }
+    }
+#endif
     err = omx->allocateNode(componentName.c_str(), observer, &omxNode);
     androidSetThreadPriority(tid, prevPriority);
 
@@ -8702,7 +8715,6 @@ status_t ACodec::queryCapabilities(
     sp<IOMX> omx = client.interface();
     sp<CodecObserver> observer = new CodecObserver;
     sp<IOMXNode> omxNode;
-
     err = omx->allocateNode(name, observer, &omxNode);
     if (err != OK) {
         client.disconnect();
