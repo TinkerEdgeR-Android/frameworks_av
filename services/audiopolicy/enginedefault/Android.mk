@@ -5,6 +5,10 @@ LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 
+ifneq ($(filter atv box, $(strip $(TARGET_BOARD_PLATFORM_PRODUCT))), )
+LOCAL_CFLAGS += -DBOX
+endif
+
 LOCAL_SRC_FILES := \
     src/Engine.cpp \
     src/EngineInstance.cpp \

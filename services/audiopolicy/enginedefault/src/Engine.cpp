@@ -696,6 +696,18 @@ audio_devices_t Engine::getDeviceForInputSource(audio_source_t inputSource) cons
             break;
 
         case AUDIO_POLICY_FORCE_SPEAKER:
+#ifdef BOX
+            /*
+             * There is no bulitin mic default for box/atv product.
+             * So if there is usb or wired headset devices is connected,
+             * using this device to record first.
+             */
+            if (availableDeviceTypes & AUDIO_DEVICE_IN_WIRED_HEADSET) {
+                device = AUDIO_DEVICE_IN_WIRED_HEADSET;
+            } else if (availableDeviceTypes & AUDIO_DEVICE_IN_USB_DEVICE) {
+                device = AUDIO_DEVICE_IN_USB_DEVICE;
+            } else
+#endif
             if (availableDeviceTypes & AUDIO_DEVICE_IN_BACK_MIC) {
                 device = AUDIO_DEVICE_IN_BACK_MIC;
             } else if (availableDeviceTypes & AUDIO_DEVICE_IN_BUILTIN_MIC) {
@@ -722,6 +734,11 @@ audio_devices_t Engine::getDeviceForInputSource(audio_source_t inputSource) cons
         }
         break;
     case AUDIO_SOURCE_CAMCORDER:
+#ifdef BOX
+        if (availableDeviceTypes & AUDIO_DEVICE_IN_USB_DEVICE) {
+            device = AUDIO_DEVICE_IN_USB_DEVICE;
+        } else
+#endif
         if (availableDeviceTypes & AUDIO_DEVICE_IN_BACK_MIC) {
             device = AUDIO_DEVICE_IN_BACK_MIC;
         } else if (availableDeviceTypes & AUDIO_DEVICE_IN_BUILTIN_MIC) {
