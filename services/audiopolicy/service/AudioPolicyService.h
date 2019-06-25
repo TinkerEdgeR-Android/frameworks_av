@@ -332,7 +332,8 @@ private:
             UPDATE_AUDIOPATCH_LIST,
             SET_AUDIOPORT_CONFIG,
             DYN_POLICY_MIX_STATE_UPDATE,
-            RECORDING_CONFIGURATION_UPDATE
+            RECORDING_CONFIGURATION_UPDATE,
+            REGISTER_UID
         };
 
         AudioCommandThread (String8 name, const wp<AudioPolicyService>& service);
@@ -348,6 +349,7 @@ private:
                     void        startToneCommand(ToneGenerator::tone_type type,
                                                  audio_stream_type_t stream);
                     void        stopToneCommand();
+                    void        registerUidCommand(sp<UidPolicy> uidpolicy);
                     status_t    volumeCommand(audio_stream_type_t stream, float volume,
                                             audio_io_handle_t output, int delayMs = 0);
                     status_t    parametersCommand(audio_io_handle_t ioHandle,
@@ -404,6 +406,11 @@ private:
             virtual ~AudioCommandData() {}
         protected:
             AudioCommandData() {}
+        };
+
+        class RegisterData : public AudioCommandData {
+        public:
+	    sp<UidPolicy> mUidPolicy;
         };
 
         class ToneData : public AudioCommandData {

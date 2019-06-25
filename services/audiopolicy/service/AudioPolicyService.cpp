@@ -65,6 +65,7 @@ AudioPolicyService::AudioPolicyService()
 {
 }
 
+
 void AudioPolicyService::onFirstRef()
 {
     {
@@ -88,7 +89,14 @@ void AudioPolicyService::onFirstRef()
     }
 
     mUidPolicy = new UidPolicy(this);
-    mUidPolicy->registerSelf();
+    char decrypt[PROPERTY_VALUE_MAX];
+    property_get("persist.sys.bootvideo.enable",decrypt, "false");
+    if(!strcmp(decrypt, "true")) {
+        mTonePlaybackThread->registerUidCommand(mUidPolicy);
+        ALOGD("bootvideo enable,send command to thread run registerSelf");
+    }else{
+        mUidPolicy->registerSelf();  //send command to thread run
+    }
 }
 
 AudioPolicyService::~AudioPolicyService()
@@ -815,6 +823,10 @@ bool AudioPolicyService::AudioCommandThread::threadLoop()
                             data->mPatchHandle);
                     mLock.lock();
                     } break;
+		case REGISTER_UID: {
+                    RegisterData *data = (RegisterData *)command->mParam.get();
+                    data->mUidPolicy->registerSelf();
+		} break;
                 default:
                     ALOGW("AudioCommandThread() unknown command %d", command->mCommand);
                 }
@@ -899,6 +911,19 @@ status_t AudioPolicyService::AudioCommandThread::dump(int fd)
 
     return NO_ERROR;
 }
+
+
+
+void AudioPolicyService::AudioCommandThread::registerUidCommand(sp<UidPolicy> uidpolicy)
+{
+    sp<AudioCommand> command = new AudioCommand();
+    command->mCommand = REGISTER_UID;
+    sp<RegisterData> data = new RegisterData();
+    data->mUidPolicy = uidpolicy;
+    command->mParam = data;
+    sendCommand(command);
+}
+
 
 void AudioPolicyService::AudioCommandThread::startToneCommand(ToneGenerator::tone_type type,
         audio_stream_type_t stream)
