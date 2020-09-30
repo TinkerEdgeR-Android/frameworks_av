@@ -161,6 +161,7 @@ player_type MediaPlayerFactory::getPlayerType(const sp<IMediaPlayer>& client,
     if(strstr(url,".wvm")){
        return NU_PLAYER;
     }
+
 #endif
     GET_PLAYER_TYPE_IMPL(client, url);
 }
@@ -195,6 +196,16 @@ player_type MediaPlayerFactory::getPlayerType(const sp<IMediaPlayer>& client,
     if (strstr(filePath.string(), ".mid")) {
         return NU_PLAYER;
     }
+
+    if (strstr(filePath.string(), ".mvc")
+        || strstr(filePath.string(), ".flv")) {
+        return NU_PLAYER;
+    }
+
+    if(strstr(filePath.string(),".mov")){
+        return TEST_PLAYER;
+    }
+
 #endif
 
     GET_PLAYER_TYPE_IMPL(client, fd, offset, length);
