@@ -213,7 +213,7 @@ struct Parameters {
     static const int32_t MAX_DEFAULT_FPS = 30;
     // Minimum FPS for a size to be listed in supported preview/video sizes
     // Set to slightly less than 30.0 to have some tolerance margin
-    static constexpr double MIN_PREVIEW_RECORD_FPS = 29.97;
+    static constexpr double MIN_PREVIEW_RECORD_FPS = 14.97;
     // Maximum frame duration for a size to be listed in supported preview/video sizes
     static constexpr int64_t MAX_PREVIEW_RECORD_DURATION_NS = 1e9 / MIN_PREVIEW_RECORD_FPS;
 
